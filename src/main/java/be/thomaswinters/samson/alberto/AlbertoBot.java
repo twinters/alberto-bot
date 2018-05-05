@@ -50,6 +50,10 @@ public class AlbertoBot implements IChatBot {
     @Override
     public Optional<String> generateReply(IChatMessage message) {
         System.out.println("Replying to: " + message.getMessage());
+        if (SentenceUtil.getWordsStream(message.getMessage()).map(String::toLowerCase).anyMatch(e -> e.equals("albert"))) {
+            return Optional.of("Ten eerste is het AL-BER-TOOOOOOO. En ten tweede: Ik heb honger!");
+        }
+
 
         Optional<String> foundRecipe = getRelatedFood(message.getMessage());
         if (foundRecipe.isPresent()) {
