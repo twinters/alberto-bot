@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="burgemeester-bot_main" target="1.9" />
+      <module name="burgemeester-bot_test" target="1.9" />
+      <module name="language-util_main" target="1.8" />
+      <module name="language-util_test" target="1.8" />
+      <module name="wikihow-scraper_main" target="1.8" />
+      <module name="wikihow-scraper_test" target="1.8" />
+      <module name="wiktionary-nl-scraper_main" target="1.8" />
+      <module name="wiktionary-nl-scraper_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

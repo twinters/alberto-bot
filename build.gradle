@@ -1,0 +1,38 @@
+plugins {
+    id "com.heroku.sdk.heroku-gradle" version "1.0.1"
+}
+
+apply plugin: 'java'
+
+sourceCompatibility = 9
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(':twitter-util')
+    compile project(':text-util')
+    compile project(':generator-util')
+    compile project(':chatbot-util')
+    compile project(':words')
+    compile project(':smulweb-scraper')
+}
+
+heroku {
+    appName = "alberto-robot"
+    processTypes(
+            worker: "java -jar build/libs/alberto-bot.jar - mode post "
+    )
+    includes = ["D:\\Self\\Repositories\\alberto-bot\\system.properties"]
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'be.thomaswinters.samson.alberto.AlbertoBot',
+        )
+    }
+    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) })
+}
