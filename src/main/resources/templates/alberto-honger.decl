@@ -1,0 +1,10 @@
+ooh = Oo{2,5}h|Aa{2,5}h
+bedel = {
+	1: @GertRobot, heb jij nog <voedsel> voor mij( in je keuken){0.5}( toevallig){0.5}?( Toeeeee?){0.4}
+}
+
+main = {
+	3: <ooh>!( <voedsel.capitalise>)! Ik ben d(ó|o)l op <voedsel>!( <bedel>){0.5}
+	2: <ooh>, nu heb ik zin in een lekkere <voedsel>!( <bedel>){0.5}
+	1: <voedsel.capitalise>! <bedel> Ik ben echt aan het stervan van de honger!
+}
