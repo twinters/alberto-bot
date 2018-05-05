@@ -9,6 +9,7 @@ import be.thomaswinters.textgeneration.domain.context.TextGeneratorContext;
 import be.thomaswinters.textgeneration.domain.generators.ITextGenerator;
 import be.thomaswinters.textgeneration.domain.generators.named.NamedGeneratorRegister;
 import be.thomaswinters.twitter.bot.TwitterBotExecutor;
+import org.jsoup.HttpStatusException;
 import twitter4j.TwitterException;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class AlbertoBot implements IChatBot {
 
@@ -42,16 +44,31 @@ public class AlbertoBot implements IChatBot {
     private List<SmulwebRecipeCard> getRecipes(String searchWord) {
         try {
             return smulwebScraper.search(searchWord);
+        } catch (HttpStatusException httpStatusE) {
+            if (httpStatusE.getStatusCode() == 503) {
+                try {
+                    System.out.println("Smulweb down: sleeping for a minute");
+                    TimeUnit.MINUTES.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    return smulwebScraper.search(searchWord);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        throw new RuntimeException();
     }
 
     @Override
     public Optional<String> generateReply(IChatMessage message) {
         System.out.println("Replying to: " + message.getMessage());
         if (SentenceUtil.getWordsStream(message.getMessage()).map(String::toLowerCase).anyMatch(e -> e.equals("albert"))) {
-            return Optional.of("Ten eerste is het AL-BER-TOOOOOOO. En ten tweede: Ik heb honger!");
+            return Optional.of("Ten eerste is het AL-BER-TOOOOOOO. En ten tweede: ik heb honger!");
         }
 
 

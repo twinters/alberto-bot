@@ -23,7 +23,7 @@ dependencies {
 heroku {
     appName = "alberto-robot"
     processTypes(
-            worker: "java -jar build/libs/alberto-bot.jar - mode post "
+            worker: "java -jar build/libs/alberto-bot.jar -mode reply"
     )
     includes = ["D:\\Self\\Repositories\\alberto-bot\\system.properties"]
 }
