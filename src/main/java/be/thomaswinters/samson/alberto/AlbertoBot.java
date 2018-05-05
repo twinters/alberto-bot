@@ -13,13 +13,13 @@ import org.jsoup.HttpStatusException;
 import twitter4j.TwitterException;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class AlbertoBot implements IChatBot {
+
+    private static final Collection<String> BLACK_LIST = new HashSet<>(
+            Arrays.asList("red", "goedemorgen", "groen", "p", "knack", "mie", "duitsland", "rusland"));
 
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
     private final ITextGenerator templatedGenerator;
@@ -36,7 +36,8 @@ public class AlbertoBot implements IChatBot {
                 .map(SmulwebRecipeCard::getTitle)
                 .map(String::toLowerCase)
                 .map(String::trim)
-                .filter(title -> title.length() > 0)
+                .filter(title -> title.length() > 1)
+                .filter(title -> !BLACK_LIST.contains(title))
                 .filter(lowerCaseMessage::contains)
                 .max(Comparator.comparingInt(String::length));
     }
