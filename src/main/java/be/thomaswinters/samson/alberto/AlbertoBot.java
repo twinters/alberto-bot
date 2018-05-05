@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class AlbertoBot implements IChatBot {
 
     private static final Collection<String> BLACK_LIST = new HashSet<>(
-            Arrays.asList("red", "goedemorgen", "groen", "p", "knack", "mie", "duitsland", "rusland"));
+            Arrays.asList("red", "goedemorgen", "groen", "p", "knack", "mie", "duitsland", "rusland", "student", "test", "speciaal"));
 
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
     private final ITextGenerator templatedGenerator;
