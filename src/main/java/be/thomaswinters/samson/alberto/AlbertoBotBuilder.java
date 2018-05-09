@@ -5,6 +5,7 @@ import be.thomaswinters.textgeneration.domain.parsers.DeclarationsFileParser;
 import be.thomaswinters.twitter.GeneratorTwitterBot;
 import be.thomaswinters.twitter.bot.AutomaticFollower;
 import be.thomaswinters.twitter.bot.TwitterBot;
+import be.thomaswinters.twitter.tweetsfetcher.SearchTweetsFetcher;
 import be.thomaswinters.twitter.tweetsfetcher.TimelineTweetsFetcher;
 import be.thomaswinters.twitter.tweetsfetcher.filter.AlreadyParticipatedFilter;
 import be.thomaswinters.twitter.tweetsfetcher.filter.NotFollowingCurrentUserFilter;
@@ -37,6 +38,9 @@ public class AlbertoBotBuilder {
                                         new TimelineTweetsFetcher(twit)
                                                 .filterOutOwnTweets(twit)
                                                 .filter(followingChecker)
+                                )
+                                .combineWith(
+                                        new SearchTweetsFetcher(twit, "albert vermeersch")
                                 )
                                 .filter(uncheck(AlreadyParticipatedFilter::new, twitter))
                                 .filterOutRetweets());
