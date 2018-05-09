@@ -9,6 +9,8 @@ import be.thomaswinters.textgeneration.domain.context.TextGeneratorContext;
 import be.thomaswinters.textgeneration.domain.generators.ITextGenerator;
 import be.thomaswinters.textgeneration.domain.generators.named.NamedGeneratorRegister;
 import be.thomaswinters.twitter.bot.TwitterBotExecutor;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Multiset;
 import org.jsoup.HttpStatusException;
 import twitter4j.TwitterException;
 
@@ -21,7 +23,8 @@ public class AlbertoBot implements IChatBot {
     private static final Collection<String> BLACK_LIST = new HashSet<>(
             Arrays.asList("red", "goedemorgen", "groen", "p", "knack", "mie",
                     "duitsland", "rusland", "student", "test",
-                    "speciaal", "toets", "verwijderen", "kat"));
+                    "speciaal", "toets", "verwijderen", "kat", "papegaai", "pearl", "it", "but", "fire", "fantasy",
+                    "love", "i love it"));
 
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
     private final ITextGenerator templatedGenerator;
@@ -30,9 +33,15 @@ public class AlbertoBot implements IChatBot {
         this.templatedGenerator = generator;
     }
 
+    public static void main(String[] args) throws TwitterException, IOException {
+        new TwitterBotExecutor(new AlbertoBotBuilder().build()).run(args);
+    }
+
     private Optional<String> getRelatedFood(String message) {
         String lowerCaseMessage = message.toLowerCase();
-        return SentenceUtil.getWordsStream(message)
+
+        ImmutableMultiset.Builder<String> b = ImmutableMultiset.builder();
+        SentenceUtil.getWordsStream(message)
                 .map(this::getRecipes)
                 .flatMap(Collection::stream)
                 .map(SmulwebRecipeCard::getTitle)
@@ -41,6 +50,14 @@ public class AlbertoBot implements IChatBot {
                 .filter(title -> title.length() > 1)
                 .filter(title -> !BLACK_LIST.contains(title))
                 .filter(lowerCaseMessage::contains)
+                .sorted(Comparator.comparingInt(String::length))
+                .forEach(b::add);
+        ImmutableMultiset<String> set = b.build();
+
+        return set.entrySet()
+                .stream()
+                .filter(e -> e.getCount() >= 2)
+                .map(Multiset.Entry::getElement)
                 .max(Comparator.comparingInt(String::length));
     }
 
@@ -82,9 +99,5 @@ public class AlbertoBot implements IChatBot {
             return Optional.of(templatedGenerator.generate(new TextGeneratorContext(register, true)));
         }
         return Optional.empty();
-    }
-
-    public static void main(String[] args) throws TwitterException, IOException {
-        new TwitterBotExecutor(new AlbertoBotBuilder().build()).run(args);
     }
 }
