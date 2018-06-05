@@ -9,12 +9,15 @@ import be.thomaswinters.textgeneration.domain.context.TextGeneratorContext;
 import be.thomaswinters.textgeneration.domain.generators.ITextGenerator;
 import be.thomaswinters.textgeneration.domain.generators.named.NamedGeneratorRegister;
 import be.thomaswinters.twitter.bot.TwitterBotExecutor;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import org.jsoup.HttpStatusException;
 import twitter4j.TwitterException;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +27,7 @@ public class AlbertoBot implements IChatBot {
             Arrays.asList("red", "goedemorgen", "groen", "p", "knack", "mie",
                     "duitsland", "rusland", "student", "test",
                     "speciaal", "toets", "verwijderen", "kat", "papegaai", "pearl", "it", "but", "fire", "fantasy",
-                    "love", "i love it"));
+                    "love", "i love it", "alexander", "baby","blue eyes", "france", "niks"));
 
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
     private final ITextGenerator templatedGenerator;
@@ -56,7 +59,7 @@ public class AlbertoBot implements IChatBot {
 
         return set.entrySet()
                 .stream()
-                .filter(e -> e.getCount() >= 2)
+                .filter(e -> e.getCount() >= 3)
                 .map(Multiset.Entry::getElement)
                 .max(Comparator.comparingInt(String::length));
     }
@@ -77,22 +80,36 @@ public class AlbertoBot implements IChatBot {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            } else {
+                throw new RuntimeException(httpStatusE);
+            }
+        } catch (SocketException e) {
+            System.out.println("ERROR: " + e.getMessage() +"\nJust retrying connection...");
+            System.out.println("Sleeping for a minute");
+            try {
+                TimeUnit.MINUTES.sleep(1);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                return smulwebScraper.search(searchWord);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        throw new RuntimeException();
     }
 
     @Override
     public Optional<String> generateReply(IChatMessage message) {
-        System.out.println("Replying to: " + message.getMessage());
-        if (SentenceUtil.getWordsStream(message.getMessage()).map(String::toLowerCase).anyMatch(e -> e.equals("albert"))) {
+        System.out.println("Checking message: " + message);
+        if (SentenceUtil.getWordsStream(message.getText()).map(String::toLowerCase).anyMatch(e -> e.equals("albert"))) {
             return Optional.of("Ten eerste is het AL-BER-TOOOOOOO. En ten tweede: ik heb honger!");
         }
 
 
-        Optional<String> foundRecipe = getRelatedFood(message.getMessage());
+        Optional<String> foundRecipe = getRelatedFood(message.getText());
         if (foundRecipe.isPresent()) {
             NamedGeneratorRegister register = new NamedGeneratorRegister();
             register.createGenerator("voedsel", foundRecipe.get());

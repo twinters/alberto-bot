@@ -2,8 +2,8 @@ package be.thomaswinters.samson.alberto;
 
 import be.thomaswinters.textgeneration.domain.generators.ITextGenerator;
 import be.thomaswinters.textgeneration.domain.parsers.DeclarationsFileParser;
-import be.thomaswinters.twitter.GeneratorTwitterBot;
 import be.thomaswinters.twitter.bot.AutomaticFollower;
+import be.thomaswinters.twitter.bot.GeneratorTwitterBot;
 import be.thomaswinters.twitter.bot.TwitterBot;
 import be.thomaswinters.twitter.tweetsfetcher.SearchTweetsFetcher;
 import be.thomaswinters.twitter.tweetsfetcher.TimelineTweetsFetcher;
@@ -16,6 +16,7 @@ import twitter4j.TwitterException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static be.thomaswinters.twitter.exception.TwitterUnchecker.uncheck;
 
@@ -41,6 +42,9 @@ public class AlbertoBotBuilder {
                                 )
                                 .combineWith(
                                         new SearchTweetsFetcher(twit, "albert vermeersch")
+                                )
+                                .combineWith(
+                                        new SearchTweetsFetcher(twit, Arrays.asList("samson","koekjes"))
                                 )
                                 .filter(uncheck(AlreadyParticipatedFilter::new, twitter))
                                 .filterOutRetweets());
