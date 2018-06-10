@@ -9,6 +9,7 @@ import be.thomaswinters.textgeneration.domain.context.TextGeneratorContext;
 import be.thomaswinters.textgeneration.domain.generators.ITextGenerator;
 import be.thomaswinters.textgeneration.domain.generators.named.NamedGeneratorRegister;
 import be.thomaswinters.twitter.bot.TwitterBotExecutor;
+import be.thomaswinters.twitter.util.TwitterUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMultiset;
@@ -27,7 +28,7 @@ public class AlbertoBot implements IChatBot {
             Arrays.asList("red", "goedemorgen", "groen", "p", "knack", "mie",
                     "duitsland", "rusland", "student", "test",
                     "speciaal", "toets", "verwijderen", "kat", "papegaai", "pearl", "it", "but", "fire", "fantasy",
-                    "love", "i love it", "alexander", "baby","blue eyes", "france", "niks"));
+                    "love", "i love it", "alexander", "baby","blue eyes", "france", "niks", "geen idee", "idee", "lekker"));
 
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
     private final ITextGenerator templatedGenerator;
@@ -45,6 +46,7 @@ public class AlbertoBot implements IChatBot {
 
         ImmutableMultiset.Builder<String> b = ImmutableMultiset.builder();
         SentenceUtil.getWordsStream(message)
+                .filter(e->!TwitterUtil.isTwitterWord(e))
                 .map(this::getRecipes)
                 .flatMap(Collection::stream)
                 .map(SmulwebRecipeCard::getTitle)

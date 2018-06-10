@@ -4,7 +4,7 @@ bedel = {
 }
 
 main = {
-	3: <ooh>!( <voedsel.capitalise>)! Ik (ben d(ó|o)l op|hou zo (vee{1,3}l| enorm) van) <voedsel>!( <bedel>){0.75}
+	3: <ooh>!( <voedsel.capitalise>)! Ik (ben d(ó|o)l op|hou zo (vee{1,3}l|enorm) van) <voedsel>!( <bedel>){0.75}
 	2: <ooh>, (nu heb ik|ik heb) zin in een (lekkere|overheerlijke) <voedsel>!( <bedel>){0.6}
 	1: <voedsel.capitalise>! <bedel> Ik ben echt aan het sterven van de honger!
 }
