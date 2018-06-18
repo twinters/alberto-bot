@@ -1,6 +1,7 @@
 package be.thomaswinters.samson.alberto;
 
 import be.thomaswinters.textgeneration.domain.generators.ITextGenerator;
+import be.thomaswinters.textgeneration.domain.generators.databases.DeclarationFileTextGenerator;
 import be.thomaswinters.textgeneration.domain.parsers.DeclarationsFileParser;
 import be.thomaswinters.twitter.bot.AutomaticFollower;
 import be.thomaswinters.twitter.bot.GeneratorTwitterBot;
@@ -21,10 +22,10 @@ import java.util.Arrays;
 import static be.thomaswinters.twitter.exception.TwitterUnchecker.uncheck;
 
 public class AlbertoBotBuilder {
-    private final URL templateFile = ClassLoader.getSystemResource("templates/alberto-honger.decl");
+    private final URL templateFile = ClassLoader.getSystemResource("templates/alberto.decl");
 
     public TwitterBot build() throws IOException, TwitterException {
-        ITextGenerator generator = DeclarationsFileParser.createTemplatedGenerator(templateFile, new ArrayList<>());
+        DeclarationFileTextGenerator generator = DeclarationsFileParser.createTemplatedGenerator(templateFile, new ArrayList<>());
         Twitter twitter = TwitterLogin.getTwitterFromEnvironment();
 
         NotFollowingCurrentUserFilter followingChecker = new NotFollowingCurrentUserFilter(twitter, true);

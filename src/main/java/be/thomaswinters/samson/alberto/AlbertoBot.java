@@ -2,16 +2,15 @@ package be.thomaswinters.samson.alberto;
 
 import be.thomaswinters.chatbot.IChatBot;
 import be.thomaswinters.chatbot.data.IChatMessage;
+import be.thomaswinters.random.Picker;
 import be.thomaswinters.scrapers.smulweb.SmulwebScraper;
 import be.thomaswinters.scrapers.smulweb.data.SmulwebRecipeCard;
 import be.thomaswinters.sentence.SentenceUtil;
 import be.thomaswinters.textgeneration.domain.context.TextGeneratorContext;
-import be.thomaswinters.textgeneration.domain.generators.ITextGenerator;
+import be.thomaswinters.textgeneration.domain.generators.databases.DeclarationFileTextGenerator;
 import be.thomaswinters.textgeneration.domain.generators.named.NamedGeneratorRegister;
 import be.thomaswinters.twitter.bot.TwitterBotExecutor;
 import be.thomaswinters.twitter.util.TwitterUtil;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import org.jsoup.HttpStatusException;
@@ -32,9 +31,9 @@ public class AlbertoBot implements IChatBot {
                     "ferrari"));
 
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
-    private final ITextGenerator templatedGenerator;
+    private final DeclarationFileTextGenerator templatedGenerator;
 
-    public AlbertoBot(ITextGenerator generator) {
+    public AlbertoBot(DeclarationFileTextGenerator generator) {
         this.templatedGenerator = generator;
     }
 
@@ -69,6 +68,15 @@ public class AlbertoBot implements IChatBot {
                 .filter(e -> e.getCount() >= 3)
                 .map(Multiset.Entry::getElement)
                 .max(Comparator.comparingInt(String::length));
+    }
+
+
+    private Optional<String> getRandomFood() {
+        try {
+            return Picker.pickOptional(smulwebScraper.scrapeSomeTitles());
+        } catch (IOException e) {
+            return Optional.empty();
+        }
     }
 
     private List<SmulwebRecipeCard> getRecipes(String searchWord) {
@@ -110,18 +118,20 @@ public class AlbertoBot implements IChatBot {
 
     @Override
     public Optional<String> generateReply(IChatMessage message) {
-        System.out.println("Checking message: " + message);
+        // Find food in tweet
+        Optional<String> foundRecipe = getRelatedFood(message.getText());
+        NamedGeneratorRegister register = new NamedGeneratorRegister();
+        foundRecipe.ifPresent(s -> register.createGenerator("voedsel", s));
+        getRandomFood().ifPresent(f -> register.createGenerator("randomVoedsel", f));
+
         if (SentenceUtil.getWordsStream(message.getText()).map(String::toLowerCase).anyMatch(e -> e.equals("albert"))) {
-            return Optional.of("Ten eerste is het AL-BER-TOOOOOOO. En ten tweede: ik heb honger!");
+            return Optional.of(templatedGenerator.generate("naamVerbetering", new TextGeneratorContext(register,true)));
         }
 
-
-        Optional<String> foundRecipe = getRelatedFood(message.getText());
         if (foundRecipe.isPresent()) {
-            NamedGeneratorRegister register = new NamedGeneratorRegister();
-            register.createGenerator("voedsel", foundRecipe.get());
             return Optional.of(templatedGenerator.generate(new TextGeneratorContext(register, true)));
         }
         return Optional.empty();
     }
+
 }
