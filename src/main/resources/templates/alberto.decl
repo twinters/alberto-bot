@@ -1,20 +1,24 @@
 
+foodemoji = 🍇|🍈|🍉|🍊|🍋|🍌|🍍|🍎|🍏|🍐|🍑|🍒|🍓|🥝|🍅|🥥|🥑|🍆|🥔|🥕|🌽|🌶|🥒|🥦|🍄|🥜|🌰|🍞|🥐|🥖|🥨|🥞|🧀|🍖|🍗|🥩|🥓|🍔|🍟|🍕|🌭|🥪|🌮|🌯|🍳|🍲|🥣|🥗|🍿|🥫|🍱|🍘|🍙|🍚|🍛|🍜|🍝|🍠|🍢|🍣|🍤|🍥|🍡|🥟|🥠|🥡|🍦|🍧|🍨|🍩|🍪|🎂|🍰|🥧|🍫|🍬|🍭|🍮|🍯|🍼|🥛|☕|🍵|🍶|🍾|🍷|🍸|🍹|🍺|🍻|🥂|🥃|🥤|🥢|🍽|🍴|🥄
+
 ooh = Oo{1,5}h( mjammie{1,4}){0.3}
 bedel = {
-	1: @Gert_bot, heb jij nog <voedsel> voor mij( in je keuken){0.5}( toevallig){0.5}?( Toee{2,5}?){0.4}( of (heb je ){.5}anders (eventueel|misschien) een <randomVoedsel.lower>? ){.4}( Ik zal anders zelf wel eens gaan kijken in de keuken!){0.3}
+	1: @Gert_bot, heb jij nog <voedsel> voor mij( in je keuken){0.5}( toevallig){0.5}?( Toee{2,5}?){0.4}( Of (heb je ){.5}anders (eventueel|misschien) een <randomVoedsel.lower>? ){.4}( Ik zal anders zelf wel eens gaan kijken in de keuken!){0.3}
 }
 sterfVanHonger = Ik (ben echt aan het sterven|ga echt (dood|dóód|DOOD)) van de honger!
 tenTweede = <nuZin>/(<sterfVanHonger> |ik heb honger! )\ifdefined(Ik heb (zoveel ){.5} zin in <randomVoedsel.lower>! )
 
 nuZin = (nu heb ik|ik heb nu) zin in een (lekkere|overheerlijke) <voedsel>!( <bedel>){0.6}
 
-main = {
+voedselInMessage = {
 	3: <ooh>!( <voedsel.capitalise>)! Ik (ben d(ó|o)l op|hou zo (vee{1,3}l|enorm) van) <voedsel>!( <bedel>){0.75}( <sterfVanHonger>){.5}
 	2: <ooh>, <nuzin>
 	1: <voedsel.capitalise>! <bedel> <sterfVanHonger>
 }
 
+main = <voedselInMessage> <foodemoji>{0,3}
+
 
 naamVerbetering = {
-	1: Ten eerste is het AL-BER-TO{3,9}. En ten tweede: <tenTweede.decapitalise>
+	1: Ten eerste is het AL-BER-TO{3,9}. En ten tweede: <tenTweede.decapitalise> <foodemoji>{0,3}
 }
