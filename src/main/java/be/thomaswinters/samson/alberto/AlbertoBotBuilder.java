@@ -32,21 +32,19 @@ public class AlbertoBotBuilder {
         return new GeneratorTwitterBot(twitter,
                 new AutomaticFollower(twitter),
                 new AlbertoBot(generator),
-                twit ->
-                        TwitterBot.MENTIONS_RETRIEVER
-                                .apply(twit)
-                                .combineWith(
-                                        new TimelineTweetsFetcher(twit)
-                                                .filterOutOwnTweets(twit)
-                                                .filter(followingChecker)
-                                )
-                                .combineWith(
-                                        new SearchTweetsFetcher(twit, "albert vermeersch")
-                                )
-                                .combineWith(
-                                        new SearchTweetsFetcher(twit, Arrays.asList("samson","koekjes"))
-                                )
-                                .filter(uncheck(AlreadyParticipatedFilter::new, twitter))
-                                .filterOutRetweets());
+                TwitterBot.MENTIONS_RETRIEVER
+                        .apply(twitter)
+                        .combineWith(
+                                new TimelineTweetsFetcher(twitter)
+                                        .filterOutOwnTweets(twitter)
+                                        .filter(followingChecker)
+                        )
+                        .combineWith(
+                                new SearchTweetsFetcher(twitter, "albert vermeersch"),
+                                new SearchTweetsFetcher(twitter, Arrays.asList("samson", "koekjes")),
+                                new SearchTweetsFetcher(twitter, Arrays.asList("samson", "gert", "albert"))
+                        )
+                        .filter(uncheck(AlreadyParticipatedFilter::new, twitter, 6))
+                        .filterOutRetweets());
     }
 }
