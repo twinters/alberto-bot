@@ -31,7 +31,7 @@ heroku {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'be.thomaswinters.samson.alberto.AlbertoBot',
+                'Main-Class': 'be.thomaswinters.samson.alberto.AlbertoTwitterBot',
         )
     }
     from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) })
