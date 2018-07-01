@@ -9,17 +9,18 @@ import be.thomaswinters.sentence.SentenceUtil;
 import be.thomaswinters.textgeneration.domain.context.TextGeneratorContext;
 import be.thomaswinters.textgeneration.domain.generators.databases.DeclarationFileTextGenerator;
 import be.thomaswinters.textgeneration.domain.generators.named.NamedGeneratorRegister;
-import be.thomaswinters.twitter.bot.TwitterBotExecutor;
+import be.thomaswinters.textgeneration.domain.parsers.DeclarationsFileParser;
 import be.thomaswinters.twitter.util.TwitterUtil;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import org.jsoup.HttpStatusException;
-import twitter4j.TwitterException;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
 
 public class AlbertoBot implements IChatBot {
 
@@ -28,18 +29,17 @@ public class AlbertoBot implements IChatBot {
                     "duitsland", "rusland", "student", "test",
                     "speciaal", "toets", "verwijderen", "kat", "papegaai", "pearl", "it", "but", "fire", "fantasy",
                     "love", "i love it", "alexander", "baby", "blue eyes", "france", "niks", "geen idee", "idee", "lekker",
-                    "ferrari"));
-
+                    "ferrari", "leeg", "rood", "stoplicht", "baby face"));
+    private static final URL templateFile = ClassLoader.getSystemResource("templates/alberto.decl");
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
     private final DeclarationFileTextGenerator templatedGenerator;
 
-    public AlbertoBot(DeclarationFileTextGenerator generator) {
-        this.templatedGenerator = generator;
+
+    public AlbertoBot() throws IOException {
+        this.templatedGenerator =
+                DeclarationsFileParser.createTemplatedGenerator(templateFile, new ArrayList<>());
     }
 
-    public static void main(String[] args) throws TwitterException, IOException {
-        new TwitterBotExecutor(new AlbertoBotBuilder().build()).run(args);
-    }
 
     private Optional<String> getRelatedFood(String message) {
         String lowerCaseMessage = message.toLowerCase()
@@ -69,7 +69,6 @@ public class AlbertoBot implements IChatBot {
                 .map(Multiset.Entry::getElement)
                 .max(Comparator.comparingInt(String::length));
     }
-
 
     private Optional<String> getRandomFood() {
         try {
@@ -118,6 +117,7 @@ public class AlbertoBot implements IChatBot {
 
     @Override
     public Optional<String> generateReply(IChatMessage message) {
+        System.out.println("GENERATING FOR " + message);
         // Find food in tweet
         Optional<String> foundRecipe = getRelatedFood(message.getText());
         NamedGeneratorRegister register = new NamedGeneratorRegister();
@@ -125,7 +125,7 @@ public class AlbertoBot implements IChatBot {
         getRandomFood().ifPresent(f -> register.createGenerator("randomVoedsel", f));
 
         if (SentenceUtil.getWordsStream(message.getText()).map(String::toLowerCase).anyMatch(e -> e.equals("albert"))) {
-            return Optional.of(templatedGenerator.generate("naamVerbetering", new TextGeneratorContext(register,true)));
+            return Optional.of(templatedGenerator.generate("naamVerbetering", new TextGeneratorContext(register, true)));
         }
 
         if (foundRecipe.isPresent()) {

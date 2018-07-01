@@ -6,7 +6,7 @@ bedel = {
 	1: @Gert_bot, heb jij nog <voedsel> voor mij( in je keuken){0.5}( toevallig){0.5}?( Toee{2,5}?){0.4}( Of (heb je ){.5}anders (eventueel|misschien) een <randomVoedsel.lower>? ){.4}( Ik zal anders zelf wel eens gaan kijken in de keuken!){0.3}
 }
 sterfVanHonger = Ik (ben echt aan het sterven|ga echt (dood|dóód|DOOD)) van de honger!
-tenTweede = <nuZin>/(<sterfVanHonger> |ik heb honger! )\ifdefined(Ik heb (zoveel ){.5} zin in <randomVoedsel.lower>! )
+tenTweede = <nuZin>/(<sterfVanHonger> |ik heb honger! )\ifdefined(Ik heb (zoveel ){.5}zin in <randomVoedsel.lower>! )
 
 nuZin = (nu heb ik|ik heb nu) zin in een (lekkere|overheerlijke) <voedsel>!( <bedel>){0.6}
 
