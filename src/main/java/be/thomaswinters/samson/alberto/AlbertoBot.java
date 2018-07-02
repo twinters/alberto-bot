@@ -49,8 +49,9 @@ public class AlbertoBot implements IChatBot {
                 .replaceAll("vermicelli", "");
 
         ImmutableMultiset.Builder<String> b = ImmutableMultiset.builder();
-        SentenceUtil.getWordsStream(message)
+        SentenceUtil.splitOnSpaces(message)
                 .filter(e -> !TwitterUtil.isTwitterWord(e))
+                .map(SentenceUtil::removeNonLetters)
                 .map(this::getRecipes)
                 .flatMap(Collection::stream)
                 .map(SmulwebRecipeCard::getTitle)
