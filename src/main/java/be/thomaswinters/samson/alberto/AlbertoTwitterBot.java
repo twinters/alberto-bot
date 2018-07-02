@@ -29,7 +29,7 @@ public class AlbertoTwitterBot {
 
         return new TwitterBot(twitter,
                 BehaviourCreator.automaticFollower(twitter),
-                BehaviourCreator.fromMessageReactor(new AlbertoBot()),
+                BehaviourCreator.fromMessageReactor(new AlbertoBot(),2),
                 TwitterBot.MENTIONS_RETRIEVER
                         .apply(twitter)
                         .combineWith(
@@ -42,6 +42,7 @@ public class AlbertoTwitterBot {
                                 new SearchTweetsFetcher(twitter, Arrays.asList("samson", "koekjes")),
                                 new SearchTweetsFetcher(twitter, Arrays.asList("samson", "gert", "albert"))
                         )
+                        .distinct()
                         .filter(uncheck(AlreadyParticipatedFilter::new, twitter, 3))
                         .filterOutRetweets());
     }
