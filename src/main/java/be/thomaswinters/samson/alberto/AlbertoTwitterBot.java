@@ -4,6 +4,7 @@ import be.thomaswinters.twitter.bot.BehaviourCreator;
 import be.thomaswinters.twitter.bot.TwitterBot;
 import be.thomaswinters.twitter.tweetsfetcher.SearchTweetsFetcher;
 import be.thomaswinters.twitter.tweetsfetcher.TimelineTweetsFetcher;
+import be.thomaswinters.twitter.tweetsfetcher.TweetsFetcherCombiner;
 import be.thomaswinters.twitter.tweetsfetcher.filter.AlreadyParticipatedFilter;
 import be.thomaswinters.twitter.tweetsfetcher.filter.NotFollowingCurrentUserFilter;
 import be.thomaswinters.twitter.util.TwitterLogin;
@@ -29,7 +30,7 @@ public class AlbertoTwitterBot {
 
         return new TwitterBot(twitter,
                 BehaviourCreator.automaticFollower(twitter),
-                BehaviourCreator.fromMessageReactor(new AlbertoBot(),2),
+                BehaviourCreator.fromMessageReactor(new AlbertoHongerGenerator(), 2),
                 TwitterBot.MENTIONS_RETRIEVER
                         .apply(twitter)
                         .combineWith(
@@ -38,9 +39,11 @@ public class AlbertoTwitterBot {
                                         .filter(followingChecker)
                         )
                         .combineWith(
-                                new SearchTweetsFetcher(twitter, "albert vermeersch"),
-                                new SearchTweetsFetcher(twitter, Arrays.asList("samson", "koekjes")),
-                                new SearchTweetsFetcher(twitter, Arrays.asList("samson", "gert", "albert"))
+                                Arrays.asList(
+                                        new SearchTweetsFetcher(twitter, "albert vermeersch"),
+                                        new SearchTweetsFetcher(twitter, Arrays.asList("samson", "koekjes")),
+                                        new SearchTweetsFetcher(twitter, Arrays.asList("samson", "gert", "albert"))
+                                )
                         )
                         .distinct()
                         .filter(uncheck(AlreadyParticipatedFilter::new, twitter, 3))

@@ -1,6 +1,8 @@
 package be.thomaswinters.samson.alberto;
 
 import be.thomaswinters.chatbot.IChatBot;
+import be.thomaswinters.chatbot.data.ChatMessage;
+import be.thomaswinters.chatbot.data.ChatUser;
 import be.thomaswinters.chatbot.data.IChatMessage;
 import be.thomaswinters.random.Picker;
 import be.thomaswinters.scrapers.smulweb.SmulwebScraper;
@@ -22,22 +24,33 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
-public class AlbertoBot implements IChatBot {
+public class AlbertoHongerGenerator implements IChatBot {
 
     private static final Collection<String> BLACK_LIST = new HashSet<>(
             Arrays.asList("red", "goedemorgen", "groen", "p", "knack", "mie",
                     "duitsland", "rusland", "student", "test",
                     "speciaal", "toets", "verwijderen", "kat", "papegaai", "pearl", "it", "but", "fire", "fantasy",
                     "love", "i love it", "alexander", "baby", "blue eyes", "france", "niks", "geen idee", "idee", "lekker",
-                    "ferrari", "leeg", "rood", "stoplicht", "baby face"));
+                    "ferrari", "leeg", "rood", "stoplicht", "baby face", "herman", "paradise"));
     private static final URL templateFile = ClassLoader.getSystemResource("templates/alberto.decl");
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
     private final DeclarationFileTextGenerator templatedGenerator;
 
 
-    public AlbertoBot() throws IOException {
+    public AlbertoHongerGenerator() throws IOException {
         this.templatedGenerator =
                 DeclarationsFileParser.createTemplatedGenerator(templateFile, new ArrayList<>());
+    }
+
+    public static void main(String[] args) throws IOException {
+        AlbertoHongerGenerator hongerGenerator = new AlbertoHongerGenerator();
+        for (int i = 0; i < 100; i++) {
+            System.out.println(
+                    hongerGenerator
+                            .generate(new ChatMessage(Optional.empty(), "pizza", new ChatUser("bot"))));
+
+        }
+
     }
 
 

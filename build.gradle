@@ -36,3 +36,9 @@ jar {
     }
     from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) })
 }
+
+task buildDeployHeroku {
+    dependsOn 'build'
+    dependsOn 'deployHeroku'
+    tasks.findByName('deployHeroku').mustRunAfter 'build'
+}

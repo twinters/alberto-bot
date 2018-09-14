@@ -1,19 +1,36 @@
 
+eender_wie = (@Gert_bot|@BurgemeesterBot|@JeannineBot|@OctaafBot|@SamsonRobot)
+getal = 2|5|10|20
+typisch_eten = (<getal> liter limonade|<getal> chocoladerepen|<getal> slagroomtaarten|snoepjes|(<getal> ){.5}koekjes)
+eten_combi = <typisch_eten>|<typisch_eten> en <typisch_eten>|<typisch_eten>,<typisch_eten> en <typisch_eten>
+
 foodemoji = 🍇|🍈|🍉|🍊|🍋|🍌|🍍|🍎|🍏|🍐|🍑|🍒|🍓|🥝|🍅|🥥|🥑|🍆|🥔|🥕|🌽|🌶|🥒|🥦|🍄|🥜|🌰|🍞|🥐|🥖|🥨|🥞|🧀|🍖|🍗|🥩|🥓|🍔|🍟|🍕|🌭|🥪|🌮|🌯|🍳|🍲|🥣|🥗|🍿|🥫|🍱|🍘|🍙|🍚|🍛|🍜|🍝|🍠|🍢|🍣|🍤|🍥|🍡|🥟|🥠|🥡|🍦|🍧|🍨|🍩|🍪|🎂|🍰|🥧|🍫|🍬|🍭|🍮|🍯|🍼|🥛|☕|🍵|🍶|🍾|🍷|🍸|🍹|🍺|🍻|🥂|🥃|🥤|🥢|🍽|🍴|🥄
 
-ooh = Oo{1,5}h( mjammie{1,4}){0.3}
-bedel = {
-	1: @Gert_bot, heb jij nog <voedsel> voor mij( in je keuken){0.5}( toevallig){0.5}?( Toee{2,5}?){0.4}( Of (heb je ){.5}anders (eventueel|misschien) een <randomVoedsel.lower>? ){.4}( Ik zal anders zelf wel eens gaan kijken in de keuken!){0.3}
+ooh = Oo{1,5}h( mjammie{1,4}){0.3}|Joepie{1,4}|Joe-pie{1,4}
+toe = Toe{1,6}?
+buik = mijn (hongerige|knorrende|rammelende) (maag|buik)(je){.7}
+octaaf_winkel = de (winkel|kruidenierszaak) van (@OctaafBot|@JeannineBot)|kruidenierszaak De Bolle
+
+bedel_feitje = {
+	2: @Gert_bot, heb jij nog <voedsel> voor mij( in je keuken){0.5}( toevallig){0.5}?( <toe>){0.4}( Of (heb je ){.5}anders (eventueel|misschien) een <randomVoedsel.lower>? ){.4}( Ik zal anders zelf wel eens gaan kijken in de keuken!){0.3}
+	1: Misschien is er nog wat <voedsel> in <octaaf_winkel>! <ooh>( <voedsel>){.8}!
+	1: Zou er nog <voedsel> zijn in <octaaf_winkel>?
+	1: @BurgemeesterBot,( misschien){.5} (kunnen|moeten) we een (gigantisch|groot|overheerlijk) <voedsel>-feest( voor heel het dorp) organiseren binnenkort?( <toe>){.5}
+	1: <eender_wie>, heb jij nog een (béétje|beetje|stukje) <voedsel> voor (me|mij|mij en <buik>|<buik>)?( <toe>){.5}
+	1: Ik ga aan mijn mama vragen dat( vanavond){.7} (te koken|klaar te maken)( voor mij){.6}!( Zij maakt dat( ook){.5} altijd als Nonkel Robert langskomt){.5}
+	1: <voedsel.capitalise> is echt bijna zo lekker als <typisch_eten>
+	1: Ik zou zo <eten_combi> (willen|durven) ruilen voor( een beetje){.6} <voedsel>!
+	1: *likt aan vingers*
 }
-sterfVanHonger = Ik (ben echt aan het sterven|ga echt (dood|dóód|DOOD)) van de honger!
+sterfVanHonger = Ik (ben echt aan het sterven|ga echt (doo{1,3}d|dóó{1,3}d|DOO{1,3}D)) van de honger!
 tenTweede = <nuZin>/(<sterfVanHonger> |ik heb honger! )\ifdefined(Ik heb (zoveel ){.5}zin in <randomVoedsel.lower>! )
 
-nuZin = (nu heb ik|ik heb nu) zin in een (lekkere|overheerlijke) <voedsel>!( <bedel>){0.6}
+nuZin = (nu heb ik|ik heb nu) zin in een (lekkere|overheerlijke) <voedsel>!( <bedel_feitje>){0.6}
 
 voedselInMessage = {
-	3: <ooh>!( <voedsel.capitalise>)! Ik (ben d(ó|o)l op|hou zo (vee{1,3}l|enorm) van) <voedsel>!( <bedel>){0.75}( <sterfVanHonger>){.5}
-	2: <ooh>, <nuzin>
-	1: <voedsel.capitalise>! <bedel> <sterfVanHonger>
+	1: <ooh>!( <voedsel.capitalise>)! Ik (ben d(ó|o)l op|hou zo (vee{1,3}l|enorm) van) <voedsel>!( <bedel_feitje>){0.4}( <sterfVanHonger>){.4}
+	1: <ooh>, <nuzin>
+	1: <voedsel.capitalise>! <bedel_feitje> <sterfVanHonger>{.5}
 }
 
 main = <voedselInMessage> <foodemoji>{0,3}
