@@ -28,7 +28,7 @@ bedel_feitje = {
 sterf_van_honger = Ik (ben echt aan het sterven|ga echt (doo{1,3}d|dóó{1,3}d|DOO{1,3}D)) van de honger!
 tenTweede = <nu_zin>/(<sterf_van_honger> |ik heb honger! )\ifdefined(Ik heb (zoveel ){.5}zin in <randomVoedsel.lower>! )
 
-nu_zin = (nu heb ik|ik heb nu) zin in( een){.3} (lekkere|overheerlijke) <voedsel>( voor <buik>){.5}!( <bedel_feitje>){0.6}
+nu_zin = (nu heb ik|ik heb nu) zin in( een){.2} (lekkere|overheerlijke) <voedsel>( voor <buik>){.5}!( <bedel_feitje>){0.6}
 
 voedsel_in_message = {
 	1: <ooh>!( <voedsel.capitalise>)! Ik (ben d(ó|o)l op|hou zo (vee{1,3}l|enorm) van) <voedsel>!( <bedel_feitje>){0.4}( <sterf_van_honger>){.4}
