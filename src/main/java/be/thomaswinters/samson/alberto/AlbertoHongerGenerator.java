@@ -32,9 +32,11 @@ public class AlbertoHongerGenerator implements IChatBot {
                     "speciaal", "toets", "verwijderen", "kat", "papegaai", "pearl", "it", "but", "fire", "fantasy",
                     "love", "i love it", "alexander", "baby", "blue eyes", "france", "niks", "geen idee", "idee", "lekker",
                     "ferrari", "leeg", "rood", "stoplicht", "baby face", "herman", "paradise", "filosoof",
-                    "toren van pisa", "flip", "heaven", "air conditioner", "ge", "zult"));
+                    "toren van pisa", "flip", "heaven", "air conditioner", "ge", "zult", "the end", "end", "tnt",
+                    "rotzooi", "charlotte", "oranje boven", "muizen", "hell"));
     private static final URL templateFile = ClassLoader.getSystemResource("templates/alberto.decl");
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
+
     private final DeclarationFileTextGenerator templatedGenerator;
 
 
@@ -147,6 +149,10 @@ public class AlbertoHongerGenerator implements IChatBot {
             return Optional.of(templatedGenerator.generate(new TextGeneratorContext(register, true)));
         }
         return Optional.empty();
+    }
+
+    protected DeclarationFileTextGenerator getTemplatedGenerator() {
+        return templatedGenerator;
     }
 
 }
