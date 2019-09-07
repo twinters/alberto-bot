@@ -16,7 +16,7 @@ dependencies {
     compile project(':text-util')
     compile project(':generator-util')
     compile project(':chatbot-util')
-    compile project(':words')
+    compile project(':babbly')
     compile project(':smulweb-scraper')
 }
 

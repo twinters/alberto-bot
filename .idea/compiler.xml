@@ -10,6 +10,8 @@
       <module name="wikihow-scraper_test" target="1.8" />
       <module name="wiktionary-nl-scraper_main" target="1.8" />
       <module name="wiktionary-nl-scraper_test" target="1.8" />
+      <module name="words_main" target="1.9" />
+      <module name="words_test" target="1.9" />
     </bytecodeTargetLevel>
   </component>
 </project>

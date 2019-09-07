@@ -8,6 +8,6 @@ include ':chatbot-util'
 project(':chatbot-util').projectDir = new File(settingsDir, '../chatbot-util')
 include ':smulweb-scraper'
 project(':smulweb-scraper').projectDir = new File(settingsDir, '../smulweb-scraper')
-include ':words'
-project(':words').projectDir = new File(settingsDir, '../words')
+include ':babbly'
+project(':babbly').projectDir = new File(settingsDir, '../babbly')
 rootProject.name = 'alberto-bot'

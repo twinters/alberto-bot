@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1150697428/words.iml" filepath="$PROJECT_DIR$/.idea/modules/-1150697428/words.iml" group="words" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1150697428/words_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1150697428/words_main.iml" group="words" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1150697428/words_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-1150697428/words_test.iml" group="words" />
+    </modules>
+  </component>
+</project>
