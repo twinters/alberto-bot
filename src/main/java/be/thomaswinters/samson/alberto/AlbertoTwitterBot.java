@@ -2,7 +2,6 @@ package be.thomaswinters.samson.alberto;
 
 import be.thomaswinters.twitter.bot.BehaviourCreator;
 import be.thomaswinters.twitter.bot.TwitterBot;
-import be.thomaswinters.twitter.tweetsfetcher.SearchTweetsFetcher;
 import be.thomaswinters.twitter.tweetsfetcher.TimelineTweetsFetcher;
 import be.thomaswinters.twitter.tweetsfetcher.filter.AlreadyParticipatedFilter;
 import be.thomaswinters.twitter.tweetsfetcher.filter.NotFollowingCurrentUserFilter;
@@ -11,7 +10,6 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static be.thomaswinters.twitter.exception.TwitterUnchecker.uncheck;
 
@@ -36,17 +34,17 @@ public class AlbertoTwitterBot {
                                 new TimelineTweetsFetcher(twitter)
                                         .filterOutOwnTweets(twitter)
                                         .filter(followingChecker)
-                                        .filterRandomly(twitter, 3, 5)
+                                        .filterRandomly(twitter, 4, 5)
                         )
-                        .combineWith(
-                                Arrays.asList(
-                                        new SearchTweetsFetcher(twitter, "albert vermeersch"),
-                                        new SearchTweetsFetcher(twitter, Arrays.asList("samson", "koekjes")),
-                                        new SearchTweetsFetcher(twitter, Arrays.asList("samson", "gert", "albert"))
-                                )
-                        )
+//                        .combineWith(
+//                                Arrays.asList(
+//                                        new SearchTweetsFetcher(twitter, "albert vermeersch"),
+//                                        new SearchTweetsFetcher(twitter, Arrays.asList("samson", "koekjes")),
+//                                        new SearchTweetsFetcher(twitter, Arrays.asList("samson", "gert", "albert"))
+//                                )
+//                        )
                         .distinct()
-                        .filter(uncheck(AlreadyParticipatedFilter::new, twitter, 3))
-                        .filterOutRetweets());
+                        .filterOutRetweets()
+                        .filter(uncheck(AlreadyParticipatedFilter::new, twitter, 3)));
     }
 }
