@@ -13,6 +13,7 @@ import be.thomaswinters.textgeneration.domain.generators.databases.DeclarationFi
 import be.thomaswinters.textgeneration.domain.generators.named.NamedGeneratorRegister;
 import be.thomaswinters.textgeneration.domain.parsers.DeclarationsFileParser;
 import be.thomaswinters.twitter.util.TwitterUtil;
+import be.thomaswinters.util.DataLoader;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import org.jsoup.HttpStatusException;
@@ -22,6 +23,7 @@ import java.net.SocketException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 public class AlbertoHongerGenerator implements IChatBot {
@@ -39,6 +41,13 @@ public class AlbertoHongerGenerator implements IChatBot {
 
     private final DeclarationFileTextGenerator templatedGenerator;
 
+    private static final Set<String> frequentWordBlackList = DataLoader
+            .readLinesUnchecked("ngrams/twitter/1-grams.csv")
+            .stream()
+            .takeWhile(e -> !e.startsWith("pizza"))
+            .map(e -> e.split("\t")[0])
+            .collect(Collectors.toSet());
+    ;
 
     public AlbertoHongerGenerator() throws IOException {
         this.templatedGenerator =
@@ -68,6 +77,7 @@ public class AlbertoHongerGenerator implements IChatBot {
         SentenceUtil.splitOnSpaces(message)
                 .filter(e -> !TwitterUtil.isTwitterWord(e))
                 .map(SentenceUtil::removeNonLetters)
+                .filter(e -> !frequentWordBlackList.contains(e.replaceAll("[^A-Za-z]", "").toLowerCase()))
                 .map(this::getRecipes)
                 .flatMap(Collection::stream)
                 .map(SmulwebRecipeCard::getTitle)

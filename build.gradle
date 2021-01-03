@@ -23,6 +23,7 @@ dependencies {
     compile project(':chatbot-util')
     compile project(':babbly')
     compile project(':smulweb-scraper')
+    compile project(':dutch-datasets')
 }
 
 test {

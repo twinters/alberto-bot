@@ -31,6 +31,12 @@ class AlbertoHongerGeneratorTest {
     }
 
     @Test
+    public void test_simple_search_false() {
+        Optional<String> food = this.albertoHongerGenerator
+                .getRelatedFood("ik niet jou");
+        assertEquals(food, Optional.empty());
+    }
+    @Test
     public void test_simple_search() {
         Optional<String> food = this.albertoHongerGenerator
                 .getRelatedFood("lasagne");

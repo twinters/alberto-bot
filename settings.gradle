@@ -10,4 +10,6 @@ include ':smulweb-scraper'
 project(':smulweb-scraper').projectDir = new File(settingsDir, '../smulweb-scraper')
 include ':babbly'
 project(':babbly').projectDir = new File(settingsDir, '../babbly')
+include ':dutch-datasets'
+project(':dutch-datasets').projectDir = new File(settingsDir, '../dutch-datasets')
 rootProject.name = 'alberto-bot'
