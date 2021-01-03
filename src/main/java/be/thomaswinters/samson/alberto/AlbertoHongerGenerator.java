@@ -57,7 +57,7 @@ public class AlbertoHongerGenerator implements IChatBot {
     }
 
 
-    private Optional<String> getRelatedFood(String message) {
+    Optional<String> getRelatedFood(String message) {
         String lowerCaseMessage = message.toLowerCase()
                 .replaceAll("meneer spaghetti", "")
                 .replaceAll("mr spaghetti", "")
