@@ -43,8 +43,9 @@ public class AlbertoTwitterBot {
 //                                        new SearchTweetsFetcher(twitter, Arrays.asList("samson", "gert", "albert"))
 //                                )
 //                        )
-                        .distinct()
                         .filterOutRetweets()
-                        .filter(uncheck(AlreadyParticipatedFilter::new, twitter, 3)));
+                        .distinct()
+                        .filter(uncheck(AlreadyParticipatedFilter::new, twitter, 3))
+                        .filterOutRetweets());
     }
 }
