@@ -127,6 +127,9 @@ public class AlbertoHongerGenerator implements IChatBot {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            } else if (httpStatusE.getStatusCode() >= 400) {
+                // If server errors, return empty list
+                return Collections.emptyList();
             } else {
                 throw new RuntimeException(httpStatusE);
             }

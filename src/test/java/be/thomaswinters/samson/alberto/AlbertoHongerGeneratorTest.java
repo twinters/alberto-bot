@@ -36,18 +36,34 @@ class AlbertoHongerGeneratorTest {
                 .getRelatedFood("ik niet jou");
         assertEquals(food, Optional.empty());
     }
+
     @Test
     public void test_simple_search_too_short_recipes() {
         Optional<String> food = this.albertoHongerGenerator
                 .getRelatedFood("Ik hou van Alaska hoor!");
         assertEquals(food, Optional.empty());
     }
+
     @Test
     public void test_simple_search() {
         Optional<String> food = this.albertoHongerGenerator
                 .getRelatedFood("lasagne");
         assertEquals(food, Optional.of("lasagne"));
     }
+
+    @Test
+    public void test_simple_search_koekjes() {
+        Optional<String> food = this.albertoHongerGenerator
+                .getRelatedFood("wil er iemand koekjes?");
+        assertEquals(food, Optional.of("koekjes"));
+    }
+
+//    @Test
+//    public void test_simple_search_koekje() {
+//        Optional<String> food = this.albertoHongerGenerator
+//                .getRelatedFood("wil er iemand een koekje hebben?");
+//        assertEquals(food, Optional.of("koekje"));
+//    }
 
     @Test
     public void test_searching() {
