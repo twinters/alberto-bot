@@ -37,6 +37,7 @@ public class AlbertoHongerGenerator implements IChatBot {
                     "toren van pisa", "flip", "heaven", "air conditioner", "ge", "zult", "the end", "end", "tnt",
                     "rotzooi", "charlotte", "oranje boven", "muizen", "hell"));
     private static final URL templateFile = ClassLoader.getSystemResource("templates/alberto.decl");
+    private static final int MIN_RECIPE_LIST_LENGTH = 50;
     private final SmulwebScraper smulwebScraper = new SmulwebScraper();
 
     private final DeclarationFileTextGenerator templatedGenerator;
@@ -80,6 +81,7 @@ public class AlbertoHongerGenerator implements IChatBot {
                 .filter(e -> !frequentWordBlackList.contains(e.replaceAll("[^A-Za-z]", "").toLowerCase()))
                 .map(this::getRecipes)
                 .flatMap(Collection::stream)
+                .filter(this::longEnoughRecipeList)
                 .map(SmulwebRecipeCard::getTitle)
                 .map(String::toLowerCase)
                 .map(String::trim)
@@ -95,6 +97,10 @@ public class AlbertoHongerGenerator implements IChatBot {
                 .filter(e -> e.getCount() >= 3)
                 .map(Multiset.Entry::getElement)
                 .max(Comparator.comparingInt(String::length));
+    }
+
+    private boolean longEnoughRecipeList(SmulwebRecipeCard smulwebRecipeCard) {
+        return smulwebRecipeCard.getIngredients().length() > MIN_RECIPE_LIST_LENGTH;
     }
 
     private Optional<String> getRandomFood() {
